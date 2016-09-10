@@ -1,0 +1,42 @@
+data= [
+    {
+        "idd": 1,
+        "quote": "We didn't lose the game; we just ran out of time.",
+        "by":"Vince Lombardi"
+    },
+    {
+        "idd": 2,
+        "quote": "Be yourself. Everyone else is already taken.",
+        "by":"Unknown"
+    },
+    {
+        "idd": 3,
+        "quote": "Greed, for lack of a better word, is good.",
+        "by":"Wall Street"
+    },
+    {
+        "idd": 4,
+        "quote": "Dancing is silent poetry.",
+        "by":"Simonides"
+    },
+    {
+        "idd": 5,
+        "quote": "There's no place like home.",
+        "by":"The Wizard of Oz"
+    },
+     {
+        "idd": 6,
+        "quote": "If you are going through hell, keep going.",
+        "by":"Sir Winston Churchill"
+    },
+     {
+        "idd": 7,
+        "quote": "The stuff that dreams are made of.",
+        "by":"The Maltese Falcon"
+    },
+     {
+        "idd": 8,
+        "quote": "I'm walking here! I'm walking here!",
+        "by":"Midnight Cowboy"
+    }
+]
