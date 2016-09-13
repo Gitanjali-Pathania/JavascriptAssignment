@@ -1,188 +1,355 @@
 <html>
   <head>
     <title>Simon Game</title>
-     <link rel="stylesheet" href="./css/styles.css">
+     <link rel="stylesheet" href="./css/gameStyles.css">
      <script type="text/javascript" src="./jsFiles/d3.min.js "></script>
+     <script type="text/javascript" src="./jsFiles/jquery.min.js "></script>
      <audio id="type_0" src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"></audio>
      <audio id="type_1" src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"></audio>
      <audio id="type_2" src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"></audio>
      <audio id="type_3" src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"></audio>
+     <audio id="errorBuzz" src="./beep-05.mp3"></audio>
   </head>
 
   <body>
-    <div class="mainContainer1"></div>
+    <div class="mainContainer1">
+    <div class="center">
+     <h1 class="brand" style="padding-left:30px;margin-bottom:10px">Simon</h1>
+     <div class="rw"  style="padding-left:30px">
+       <div class="display inline">
+         <h1 class="counter" style="font-size:30px;font-weight:bold">0</h1>
+         <h3 class="label">STEP</h3>
+       </div>
+       <div class="btn-box inline">
+         <div class="round-btn" id="start" style="right: 10px;background-color:red"></div>
+         <h3 class="label" style="padding-right: 28px;">START</h3>
+       </div>
+       <div class="btn-box inline">
+         <div class="round-btn" id="strict"></div>
+         <h3 class="label">STRICT</h3>
+         
+       </div>
+     </div>
+     <div class="rw bot " style="padding-left:70px;display:inline-block;padding-top:20px">
+       <h3 class="label inline">OFF</h3>
+       <div  class="toggle-button" id="ded" ><button></button></div>
+       <h3 class="label inline" style="float:right;margin-left:40px">ON</h3>
+     </div>
+  </div>
+</div>
+         <script type="text/javascript">
 
-    <script type="text/javascript">
-    var dataset = {
-  apples: [10, 10, 10,10]
-};
-var currentButton,noClickStatus=false;
-var width = 400,
-    height = 400,
-    radius = Math.min(width, height) / 2;
+                                        $('#ded').click(function(){
+                                                               if($(".toggle-button").hasClass("toggle-button-selected"))
+                                                               {
+                                                                $(".toggle-button").removeClass('toggle-button-selected');
+                                                                reset();
+                                                                start='off';
+                                                                strictMode='off';
+                                                                $("#strict").css("background-color","yellow");
+                                                                gameStatus=false;
+                                                               }
+                                                                else
+                                                                {
+                                                                  $(".toggle-button").addClass('toggle-button-selected');
+                                                                  reset();
+                                                                  strictMode='off';
+                                                                  $("#strict").css("background-color","yellow");
+                                                                  //play();
+                                                                  gameStatus=true;
 
-
-var generatedSeq =[],userInputSequence=[],machinePlaySequence=[],generatedSeqFormat=[];
-
-var color = d3.scale.category20();
-
-var pie = d3.layout.pie()
-    .sort(null);
-
-var arc = d3.svg.arc()
-    .innerRadius(radius - 150)
-    .outerRadius(radius - 50);
-
-var svg = d3.select(".mainContainer1").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-var path = svg.selectAll("path")
-    .data(pie(dataset.apples))
-  .enter().append("path")
-    .attr("fill", function(d, i) { return color(i); })
-    .attr("d", arc)
-    .style("stroke-width",5)
-    .style("stroke","grey")
-    .attr("id",function(d,i){ return "type_"+i; })
-    .on('click',function(d){
-                  noClickStatus=false;
-                  d3.select(this)
-                          .style("stroke-width",10)
-                          .transition()
-                          .duration(500)
-                          .style("stroke-width",5);
-                  document.getElementById(d3.select(this).attr("id")).play();
-                  userInputSequence.push(d3.select(this).attr("id"))
-                  console.log(generatedSeqFormat)
-                  console.log(userInputSequence)
-                  if(userInputSequence.length===generatedSeqFormat.length)
-                  {
-                      console.log(arraysEqual(userInputSequence,generatedSeqFormat))
-
-                      if(arraysEqual(userInputSequence,generatedSeqFormat))
-                      {
-                        setTimeout(function(){
-                          play()
-                        },3000)
-                      }
-                      else
-                      {
-                        playHint();  
-                      }
-                  }
-                  else
-                  {
-                    // setTimeout(function(){
-                    //                         if(noClickStatus)
-                    //                               {playHint()}
-                    //             },3000)
-                  }
-     });
+                                                                 }                          
+                                                             })
 
 
-
-  // setInterval(function(){
-  //   noClickStatus=true
-  // },2000)
-    
-function playHint(){
-  console.log("playhint called")
-  userInputSequence=[];
-                        //generatedSeqFormat=[];
-                        setTimeout(function(){
-                        document.getElementById("type_0").play();
-                         },2000)
-                        setTimeout(function(){
-                         generatedSeqFormat=[];
-                         generatedSeq.forEach(function(d){
-                                                            generatedSeqFormat.push("type_"+(d-1));
-                                                        })
-                         animateSound(generatedSeq);
-                        },3000)
-}
-
-    // setInterval(function(){
-    //   play()
-    // },5000)
-
-play()
-
-function play(){
-   console.log("play called")
-  //generatedSeqFormat=[];
-      //gameCounter++;
-      generatedSeq.push(rand());
-      generatedSeq.forEach(function(d){
-          generatedSeqFormat.push("type_"+(d-1));
-      })
-      //console.log(generatedSeq)
-      //machinePlaySequence.push("type_"+(_-1));
-      animateSound(generatedSeq);
-}
+                                    var dataset = {
+                                      apples: [1, 1, 1,1]
+                                    };
+                                    var currentButton,noClickStatus=false,noActivity=false,counter=0,strictMode='off',gameStatus=false,start='off';
+                                    var width = 400,
+                                        height = 400,
+                                        radius = Math.min(width, height) / 2;
 
 
-  function animateSound(){
+                                    var generatedSeq =[],userInputSequence=[],machinePlaySequence=[],generatedSeqFormat=[];
 
-    console.log(generatedSeq)
+                                    var color = d3.scale.category20();
 
-      generatedSeq.forEach(function(d,i){
-        //console.log(d)
-        setTimeout((function(_){
- //console.log(_);
-          return function(){
+                                    var pie = d3.layout.pie()
+                                        .sort(null);
 
-              d3.selectAll("path")
-                .each(function(d_){
+                                    var arc = d3.svg.arc()
+                                        .innerRadius(radius-200)
+                                        .outerRadius(radius-10);
 
-                    var class_ = d3.select(this).attr("id");
-                   
-                    if("type_"+(_-1) === class_){
-                      
-                      //console.log("type_"+(_-1));
-                      d3.select(this)
-                          .style("stroke-width",10)
-                          .transition()
-                          .duration(500)
-                          .style("stroke-width",5);
-                      
-                      document.getElementById("type_"+(_-1)).play();
-                     // currentButton="type_"+_;
-                     //console.log(machinePlaySequence);
-                    }else{
-                      d3.select(this).style("stroke","grey");
-                    }
+                                    var svg = d3.select(".mainContainer1").append("svg")
+                                        .attr("width", width)
+                                        .attr("height", height)
+                                        .append("g")
+                                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-                })
-            }
-          //makesound
-          //and Make the animation
-        })(d),i*1000)
-      })
-}
+                                    var path = svg.selectAll("path")
+                                        .data(pie(dataset.apples))
+                                      .enter().append("path")
+                                        .attr("fill", function(d, i) { return color(i); })
+                                        .attr("d", arc)
+                                        .attr("class","buttons")
+                                        .style("stroke-width",5)
+                                        .style("stroke","grey")
+                                        .attr("id",function(d,i){ return "type_"+i; })
+                                        .on('click',function(d){
+                                                    if(gameStatus==true && start=='on')
+                                                    {
+                                                                      noClickStatus=false;
+                                                                      d3.select(this)
+                                                                              .style("stroke-width",10)
+                                                                              .transition()
+                                                                              .duration(500)
+                                                                              .style("stroke-width",5);
+                                                                      document.getElementById(d3.select(this).attr("id")).play();
+                                                                      userInputSequence.push(d3.select(this).attr("id"))
+                                                                     
+                                                                                    if(userInputSequence.length===generatedSeqFormat.length)
+                                                                                      {if(arraysEqual(userInputSequence,generatedSeqFormat))
+                                                                                          {if(counter==20)
+                                                                                            { 
+                                                                                              if (confirm('Congratulations, You Won! Want to play again?')){
+                                                                                                 generatedSeq=[];
+                                                                                                 userInputSequence=[];
+                                                                                                 generatedSeqFormat=[];
+                                                                                                 counter=0;
+                                                                                                 $('.counter').text(counter);
+                                                                                                 setTimeout(function(){
+                                                                                                    play()
+                                                                                                  },3000)}
+                                                                                              else{  
+                                                                                                 alert("Exiting! Hit 'ON' to start again")
+                                                                                                 counter=0;
+                                                                                                 $('.counter').text(counter);
+                                                                                                  }
+                                                                                            }   
+                                                                                            else{
+                                                                                              setTimeout(function(){
+                                                                                              play()
+                                                                                            },3000)}
+                                                                                          }
+                                                                                          else
+                                                                                          {if(strictMode=='on')
+                                                                                            {         
+                                                                                              document.getElementById("errorBuzz").play();
+                                                                                              setTimeout(function(){
+                                                                                                      reset();
+                                                                                                      play();
+                                                                                                       },2000)
+                                                                                            }
+                                                                                            else {
+                                                                                              playHint();  
+                                                                                              }}}
+                                                                                      else if(userInputSequence.length > generatedSeqFormat.length)
+                                                                                      {
+                                                                                        alert("Oops! you played more than expected tones. Start again!")
+                                                                                        reset();
+                                                                                        play();
+                                                                                      }
+                                                                                    else if(userInputSequence.length < generatedSeqFormat.length)
+                                                                                      {
+                                                                                            var temp1=[],j=0;
+                                                                                            for(var i=0;i<userInputSequence.length;i++){
+                                                                                              temp1.push(generatedSeqFormat[j]);
+                                                                                              j++;}
+                                                                                            if(arraysEqual(userInputSequence,temp1)==false){
+                                                                                              setTimeout(function(){
+                                                                                                console.log(strictMode)
+                                                                                                if(strictMode=='off')
+                                                                                                {
+                                                                                                  //alert("Enter the correct pattern")
+                                                                                                  playHint(); 
+                                                                                                }
+                                                                                                else if(strictMode=='on')
+                                                                                                {
+                                                                                                  // setTimeout(function(){
+                                                                                                    document.getElementById("errorBuzz").play();
+                                                                                                 reset();
+                                                                                                 play();
+                                                                                                  // },1000)
+                                                                                               }
+                                                                                                //document.getElementById("errorBuzz").play();
+                                                                                                 },500)}
+                                                                                      }
+                                                    }
+                                                      
+                                                      
+                                         });
 
-   function arraysEqual(arr1, arr2) {
-    if(arr1.length !== arr2.length)
-        return false;
-    for(var i = arr1.length; i--;) {
-        if(arr1[i] !== arr2[i])
-            return false;
-    }
-
-    return true;
-}
-  
 
 
+                                      // setInterval(function(){
+                                      //   noActivity=true
+                                      // },3000)
+                                        
+                                         onInactive(10000, function(){
+                                          //console.log(strictMode)
+                                       // console.log('Inactive for 10 seconds');  
+                                        // if((noActivity==true) && (strictMode=='off'))
+                                        //   //alert("Press more keys and complete the pattern")
+                                        //   // $('#start').click();
+                                        if(gameStatus==true && start=='on'){
+                                        if(strictMode=='off')
+                                        {playHint()}
+                                        else
+                                        {reset();
+                                         play()}
+                                        }
+                                        //noActivity=true; 
+                                    });
+                                        
+
+                                        $('#strict').click(function(){
+                                          setTimeout(function(){
+                                           if(gameStatus==true && start=='on'){
+                                                              if(strictMode=='off')
+                                                              {strictMode='on';
+                                                              $("#strict").css("background-color","red");}
+                                                              
+                                                              else
+                                                              {strictMode='off';
+                                                              $("#strict").css("background-color","yellow");}
+                                                                 reset();
+                                                                 setTimeout(function(){
+                                                                    play()
+                                                                  },1000)
+                                            }
+                                          },500)
+                                        })
+
+                                    function reset(){
+                                                                 generatedSeq=[];
+                                                                 userInputSequence=[];
+                                                                 generatedSeqFormat=[];
+                                                                 counter=0;
+                                                                 $('.counter').text(counter);
+                                    }
+                                    $('#start').click(function(){
+                                          if(gameStatus){
+                                                                strictMode=='off';
+                                                                $("#strict").css("background-color","yellow");
+                                                                start='on';
+                                                                 reset();
+                                                                 setTimeout(function(){
+                                                                    play()
+                                                                  },500)
+                                          }
+                                        })
+                                    function onInactive(ms, cb){   
+                                       
+                                        var wait = setTimeout(cb, ms); 
+                                        
+                                        document.onmousemove = document.mousedown = document.mouseup = document.onkeydown = document.onkeyup = document.focus = function(){
+                                            clearTimeout(wait);
+                                            wait = setTimeout(cb, ms);
+                                                
+                                        };
+                                    } 
+
+                                    function playHint(){
+                                      if(gameStatus){
+                                      console.log("playhint called")
+                                      userInputSequence=[];
+                                                            //generatedSeqFormat=[];
+                                                            setTimeout(function(){
+                                                            document.getElementById("errorBuzz").play();
+                                                             },2000)
+                                                            setTimeout(function(){
+                                                             generatedSeqFormat=[];
+                                                             generatedSeq.forEach(function(d){
+                                                                                                generatedSeqFormat.push("type_"+(d-1));
+                                                                                            })
+                                                             animateSound(generatedSeq);
+                                                            },3000)
+                                    }
+                                    }
+                                    function play(){
+                                      if(gameStatus){
+                                                  counter=counter+1;
+                                                
+                                                noActivity=false;
+                                                 console.log("play called")
+                                                 generatedSeqFormat=[];
+                                                    //gameCounter++;
+                                                    generatedSeq.push(rand());
+                                                    generatedSeq.forEach(function(d){
+                                                        generatedSeqFormat.push("type_"+(d-1));
+                                                    })
+                                                    animateSound(generatedSeq);
+                                                    noActivity=true;
+                                                    userInputSequence=[];
+                                                    $('.counter').text(generatedSeq.length);
+                                      }
+                                      
+                                    }
 
 
-  function rand(num){
+                                      function animateSound(){
 
-    return Math.floor(Math.random()*4+1);
-  }
+                                        //console.log(generatedSeq)
+
+                                          generatedSeq.forEach(function(d,i){
+                                            //console.log(d)
+                                            setTimeout((function(_){
+                                     //console.log(_);
+                                              return function(){
+
+                                                  d3.selectAll("path")
+                                                    .each(function(d_){
+
+                                                        var class_ = d3.select(this).attr("id");
+                                                       
+                                                        if("type_"+(_-1) === class_){
+                                                          
+                                                          //console.log("type_"+(_-1));
+                                                          d3.select(this)
+                                                              .style("stroke-width",15)
+                                                              .transition()
+                                                              .duration(500)
+                                                              .style("stroke-width",5);
+                                                          if(gameStatus){
+                                                            document.getElementById("type_"+(_-1)).play();
+                                                          }
+                                                        }else{
+                                                          d3.select(this).style("stroke","grey");
+                                                        }
+
+                                                    })
+                                                }
+                                              //makesound
+                                              //and Make the animation
+                                            })(d),i*1000)
+                                          })
+                                    }
+
+                                       function arraysEqual(arr1, arr2) {
+                                        if(arr1.length !== arr2.length)
+                                            return false;
+                                        for(var i = arr1.length; i--;) {
+                                            if(arr1[i] !== arr2[i])
+                                                return false;
+                                        }
+
+                                        return true;
+                                    }
+                                      
+
+
+
+
+                                      function rand(num){
+
+                                        return Math.floor(Math.random()*4+1);
+                                      }
+
 
 </script>
+
+
  
 </body></html>
