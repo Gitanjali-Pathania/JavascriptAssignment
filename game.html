@@ -147,6 +147,9 @@
                                                                                               }}}
                                                                                       else if(userInputSequence.length > generatedSeqFormat.length)
                                                                                       {
+                                                                                        if(strictMode=='on'){
+                                                                                          document.getElementById("errorBuzz").play();
+                                                                                        }
                                                                                         alert("Oops! you played more than expected tones. Start again!")
                                                                                         reset();
                                                                                         //play();
